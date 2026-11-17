@@ -12,6 +12,8 @@ public class DriveFinderDbContext(DbContextOptions<DriveFinderDbContext> options
 
     public DbSet<SyncState> SyncStates => Set<SyncState>();
 
+    public DbSet<DriveFileChunk> DriveFileChunks => Set<DriveFileChunk>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasPostgresExtension("vector");
