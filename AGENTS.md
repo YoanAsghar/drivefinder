@@ -13,6 +13,18 @@ The agent will only apply text afte its aproved by the user, the code should be 
 - Never commit, push, or create pull requests unless explicitly asked.
 - Never log or expose secrets, credentials, or tokens.
 
+## Documentation
+
+Every code file or folder must have its own documentation file in the `docs/` directory, mirroring the project structure.
+
+- The `docs/` directory structure mirrors the source code structure.
+- Each component gets its own `.md` file named after the source file or folder.
+- Example: `Controllers/Drive/DriveController.cs` → `docs/Controllers/Drive/DriveController.md`
+- Example: `Data/DriveFinderDbContext.cs` → `docs/Data/DriveFinderDbContext.md`
+- Example: `Models/DriveFile.cs` → `docs/Models/DriveFile.md`
+- Every agent must create or update the corresponding documentation when adding or modifying code.
+- Documentation should explain the purpose, public API, dependencies, and any important implementation details.
+
 ## Architecture
 
 - **Framework**: ASP.NET Core (.NET 10), Web API with controllers.

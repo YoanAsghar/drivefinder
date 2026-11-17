@@ -1,0 +1,7 @@
+# Build output
+bin/
+obj/
+
+# Google credentials and tokens (never commit these)
+*credentials*.json
+*token*.json

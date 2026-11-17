@@ -124,6 +124,56 @@ namespace DriveFinder.Migrations
                     b.ToTable("drive_files", (string)null);
                 });
 
+            modelBuilder.Entity("DriveFinder.Models.DriveFileChunk", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DriveFileId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Vector>("Embedding")
+                        .HasColumnType("vector(768)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MimeType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Embedding");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Embedding"), "hnsw");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Embedding"), new[] { "vector_cosine_ops" });
+
+                    b.HasIndex("DriveFileId", "Index");
+
+                    b.ToTable("drive_file_chunks", (string)null);
+                });
+
             modelBuilder.Entity("DriveFinder.Models.SyncState", b =>
                 {
                     b.Property<int>("Id")
@@ -150,6 +200,17 @@ namespace DriveFinder.Migrations
                         {
                             Id = 1
                         });
+                });
+
+            modelBuilder.Entity("DriveFinder.Models.DriveFileChunk", b =>
+                {
+                    b.HasOne("DriveFinder.Models.DriveFile", "DriveFile")
+                        .WithMany()
+                        .HasForeignKey("DriveFileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DriveFile");
                 });
 #pragma warning restore 612, 618
         }
